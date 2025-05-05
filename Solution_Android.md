@@ -53,43 +53,71 @@ Kiểm tra account com.fpt.mobix.account có tồn tại?
 
 App A – Ghi file marker
 
-Kotlin:
+## 📄 Kotlin: Ghi marker file trên Android
 
+```kotlin
 fun writeMarkerFile(context: Context) {
-val dir = File(Environment.getExternalStoragePublicDirectory("Android/media/fpt.shared"))
-if (!dir.exists()) dir.mkdirs()
-val file = File(dir, ".mobix.installed")
-if (!file.exists()) {
-file.writeText("installed")
+    val dir = File(Environment.getExternalStoragePublicDirectory("Android/media/fpt.shared"))
+    if (!dir.exists()) dir.mkdirs()
+    val file = File(dir, ".mobix.installed")
+    if (!file.exists()) {
+        file.writeText("installed")
+    }
 }
-}
+```
 
-App A – Ghi Account
+---
 
-Manifest:
+## 🔐 App A – Ghi Account qua Android AccountManager
 
-<service android:name=".authenticator.MobiXAuthenticatorService" android:permission="android.permission.BIND_ACCOUNT_AUTHENTICATOR" android:exported="true">
-<intent-filter>
-<action android:name="android.accounts.AccountAuthenticator" />
-</intent-filter>
-<meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
-</service>
+### 📄 AndroidManifest.xml
 
-XML: res/xml/authenticator.xml
+```xml
+<manifest ...>
+  <application ...>
+    ...
+    <service
+        android:name=".authenticator.AuthenticatorService"
+        android:permission="android.permission.BIND_ACCOUNT_AUTHENTICATOR">
+        <intent-filter>
+            <action android:name="android.accounts.AccountAuthenticator" />
+        </intent-filter>
+        <meta-data
+            android:name="android.accounts.AccountAuthenticator"
+            android:resource="@xml/authenticator" />
+    </service>
+    ...
+  </application>
+</manifest>
+```
 
-<account-authenticator android:accountType="com.fpt.mobix.account" android:label="MobiX" android:icon="@mipmap/ic_launcher" android:smallIcon="@mipmap/ic_launcher" />
+### 📁 File: `res/xml/authenticator.xml`
 
-Thêm Account bằng Kotlin:
+```xml
+<account-authenticator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="com.fpt.mobix.account"
+    android:icon="@mipmap/ic_launcher"
+    android:smallIcon="@mipmap/ic_launcher"
+    android:label="@string/app_name" />
+```
 
+---
+
+### 🧑‍💻 Thêm account bằng Kotlin
+
+```kotlin
 fun addMobiXAccount(context: Context) {
-val am = AccountManager.get(context)
-val type = "com.fpt.mobix.account"
-val accounts = am.getAccountsByType(type)
-if (accounts.isEmpty()) {
-val account = Account("MobiX_Installed", type)
-am.addAccountExplicitly(account, null, null)
+    val am = AccountManager.get(context)
+    val type = "com.fpt.mobix.account"
+    val accounts = am.getAccountsByType(type)
+    if (accounts.isEmpty()) {
+        val account = Account("MobiX_Installed", type)
+        am.addAccountExplicitly(account, null, null)
+    }
 }
-}
+```
+
 
 App B/C/D – Kiểm tra dấu hiệu
 
