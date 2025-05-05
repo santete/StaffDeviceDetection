@@ -153,3 +153,5 @@ App FPT Play / Hi-FPT / FPT Camera:
 Nếu tồn tại và bằng "YES" ⇒ biết thiết bị từng đăng nhập MobiX
 
 —
+✅ Ảnh minh họa:
+![image](https://github.com/user-attachments/assets/435ad692-057b-427a-96dd-cad6cd07b092)
