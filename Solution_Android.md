@@ -121,20 +121,24 @@ fun addMobiXAccount(context: Context) {
 
 App B/C/D – Kiểm tra dấu hiệu
 
-Kotlin:
+## 📄 Kotlin: Kiểm tra xem thiết bị đã từng cài App MobiX chưa
 
+```kotlin
 fun wasMobiXInstalled(context: Context): Boolean {
-val file = File(Environment.getExternalStoragePublicDirectory("Android/media/fpt.shared/.mobix.installed"))
-val hasFile = file.exists()
+    val file = File(Environment.getExternalStoragePublicDirectory("Android/media/fpt.shared/.mobix.installed"))
+    val hasFile = file.exists()
 
-kotlin
-Copy
-Edit
-val am = AccountManager.get(context)
-val hasAccount = am.getAccountsByType("com.fpt.mobix.account").isNotEmpty()
+    val am = AccountManager.get(context)
+    val hasAccount = am.getAccountsByType("com.fpt.mobix.account").isNotEmpty()
 
-return hasFile || hasAccount
+    return hasFile || hasAccount
 }
+```
+
+📌 Hàm trên sẽ:
+- Trả về `true` nếu tồn tại **file marker** trong bộ nhớ chia sẻ
+- Hoặc nếu đã từng thêm **tài khoản hệ thống** cho App MobiX
+
 
 ✅ Nếu return true ⇒ thiết bị đã từng cài MobiX
 
